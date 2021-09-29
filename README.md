@@ -2,6 +2,15 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+# Project requirements
+
+- Add and view tasks
+- Delete a task
+- Complete a task
+- Set a priority for my tasks (clarifications: high, medium, low)
+- View the tasks sorted by priority and name (clarifications: Name and priority sort are independent of each other. However, you may choose to further order by the other field if more than one item has the same value.)
+- View the number of total and completed tasks
+
 ## Available Scripts
 
 In the project directory, you can run:
