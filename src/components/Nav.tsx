@@ -4,7 +4,7 @@ import {Divider, Header} from "semantic-ui-react"
 const Nav = () => (
   <nav>
     <Header inverted textAlign="center" as="h1">
-      🔥THE🔥 todo List
+      THE 🔥 Todo List 🔥
     </Header>
     <Divider />
   </nav>

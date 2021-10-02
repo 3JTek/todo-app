@@ -1,5 +1,4 @@
-import React, {FC, useState} from "react"
-import {v4 as uuidv4} from "uuid"
+import React, {FC, useContext} from "react"
 
 import {CheckboxProps, Container, DropdownProps, FormProps, Grid, InputOnChangeData} from "semantic-ui-react"
 import Nav from "./components/Nav"
@@ -9,58 +8,36 @@ import Dashboard from "./components/Dashboard"
 import PriorityFilter from "./components/PriorityFilter"
 import ToDoList from "./components/ToDoList"
 
-const initialTasks = [
-  {id: uuidv4(), name: "First task", priority: 2, completed: false},
-  {id: uuidv4(), name: "Second task", priority: 1, completed: true},
-  {id: uuidv4(), name: "Third task", priority: 1, completed: false},
-  {id: uuidv4(), name: "Third task", priority: 3, completed: true},
-]
+import {TodoContextDispatch, TodoContextState, ITask} from "./contexts/TodoProvider"
 
 const App: FC = (): JSX.Element => {
-  const [newTask, setNewTask] = useState("")
-  const [tasks, setTasks] = useState<ITask[]>(initialTasks)
-  const [priorityFilter, setPriorityFilter] = useState<PriorityOpts | null>(null)
-  const [nameSorting, setNameSorting] = useState<SortingOpts | undefined>("ascending")
+  const {newTask, tasks, priorityFilter, nameASCSorting} = useContext(TodoContextState)
+  const dispatch = useContext(TodoContextDispatch)
 
   const handleNewTaskChange = (e: React.ChangeEvent<HTMLInputElement>, data: InputOnChangeData) => {
-    setNewTask(data.value)
+    dispatch({type: "UPDATE NEW TASK", payload: data.value})
   }
 
   const handleNewTaskSubmit = (event: React.FormEvent<HTMLFormElement>, data: FormProps) => {
     if (!newTask) return
-    setNewTask("")
-    setTasks((prevState) => [{id: uuidv4(), name: newTask, priority: 2, completed: false}, ...prevState])
+    dispatch({type: "ADD NEW TASK"})
   }
 
   const handleDelete = (taskId: string) => {
-    const newTaskArr: ITask[] = tasks.filter((task) => task.id !== taskId)
-    setTasks(newTaskArr)
+    dispatch({type: "DELETE TASK", payload: taskId})
   }
 
   const toggleComplete = (data: CheckboxProps, taskId: string) => {
-    const taskIndex = tasks.findIndex((task) => task.id === taskId)
-
-    if (taskIndex === -1) return
-
-    const newTaskArr = [...tasks]
-    newTaskArr[taskIndex].completed = Boolean(data.checked)
-
-    setTasks(newTaskArr)
+    dispatch({type: "TOGGLE COMPLETE", payload: {taskId, checked: Boolean(data.checked)}})
   }
 
   const handleChangePriority = (data: DropdownProps, taskId: string) => {
-    const taskIndex = tasks.findIndex((task) => task.id === taskId)
-
-    if (taskIndex === -1) return
-
-    const newTaskArr = [...tasks]
-    newTaskArr[taskIndex].priority = Number(data.value)
-
-    setTasks(newTaskArr)
+    dispatch({type: "CHANGE PRIORITY", payload: {taskId, value: Number(data.value)}})
   }
 
-  const toggleNameSorting = () =>
-    setNameSorting((prevState) => ([undefined, "descending"].includes(prevState) ? "ascending" : "descending"))
+  const toggleNameSorting = () => {
+    dispatch({type: "SORT BY NAME"})
+  }
 
   const filterByPriority = (tasks: ITask[]) => {
     if (!priorityFilter) return tasks
@@ -68,9 +45,12 @@ const App: FC = (): JSX.Element => {
   }
 
   const sortByName = (tasks: ITask[]) => {
-    if (nameSorting === "ascending") return tasks.sort((a, b) => (a.name > b.name ? 1 : -1))
-    else if (nameSorting === "descending") return tasks.sort((a, b) => (a.name > b.name ? -1 : 1))
-    return tasks
+    if (nameASCSorting) return tasks.sort((a, b) => (a.name > b.name ? 1 : -1))
+    return tasks.sort((a, b) => (a.name > b.name ? -1 : 1))
+  }
+
+  const handleChangePriorityFilter = (priority: number | null) => {
+    dispatch({type: "FILTER BY PRIORITY", payload: priority})
   }
 
   const compose =
@@ -85,44 +65,61 @@ const App: FC = (): JSX.Element => {
   console.log("Rendering App", tasksFilteredAndSorted)
 
   return (
-    <div style={{height: "100vh", backgroundColor: "#282c34"}}>
+    <>
       <header>
-        <Nav></Nav>
+        <Nav></Nav>u
       </header>
 
       <main>
-        <Container style={{margin: "20rem 0"}}>
-          <Grid columns="2">
+        <Container style={{height: "inherit"}}>
+          <Grid verticalAlign="middle" style={{height: "inherit"}}>
             <Grid.Column>
-              <AddTaskForm
-                newTask={newTask}
-                handleNewTaskChange={handleNewTaskChange}
-                handleNewTaskSubmit={handleNewTaskSubmit}
-              ></AddTaskForm>
-            </Grid.Column>
+              <Grid stackable>
+                <Grid.Row>
+                  <Grid.Column>
+                    <AddTaskForm
+                      newTask={newTask}
+                      handleNewTaskChange={handleNewTaskChange}
+                      handleNewTaskSubmit={handleNewTaskSubmit}
+                    ></AddTaskForm>
+                  </Grid.Column>
+                </Grid.Row>
 
-            <Grid.Column textAlign="right">
-              <Dashboard tasks={tasksFilteredAndSorted}></Dashboard>
+                <Grid.Row columns={2}>
+                  <Grid.Column>
+                    <PriorityFilter
+                      priorityFilter={priorityFilter}
+                      handleChangePriorityFilter={handleChangePriorityFilter}
+                    ></PriorityFilter>
+                  </Grid.Column>
+
+                  <Grid.Column textAlign="right">
+                    <Dashboard tasks={tasksFilteredAndSorted}></Dashboard>
+                  </Grid.Column>
+                </Grid.Row>
+
+                <Grid.Row>
+                  <Grid.Column>
+                    <ToDoList
+                      tasks={tasksFilteredAndSorted}
+                      nameASCSorting={nameASCSorting}
+                      toggleNameSorting={toggleNameSorting}
+                      handleChangePriority={handleChangePriority}
+                      toggleComplete={toggleComplete}
+                      handleDelete={handleDelete}
+                    ></ToDoList>
+                  </Grid.Column>
+                </Grid.Row>
+              </Grid>
             </Grid.Column>
           </Grid>
-
-          <PriorityFilter priorityFilter={priorityFilter} setPriorityFilter={setPriorityFilter}></PriorityFilter>
-
-          <ToDoList
-            tasks={tasksFilteredAndSorted}
-            nameSorting={nameSorting}
-            toggleNameSorting={toggleNameSorting}
-            handleChangePriority={handleChangePriority}
-            toggleComplete={toggleComplete}
-            handleDelete={handleDelete}
-          ></ToDoList>
         </Container>
       </main>
 
       <footer>
         <Footer></Footer>
       </footer>
-    </div>
+    </>
   )
 }
 

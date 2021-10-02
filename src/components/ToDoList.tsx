@@ -1,17 +1,19 @@
 import React from "react"
 import {Button, Checkbox, CheckboxProps, DropdownProps, Select, Table} from "semantic-ui-react"
 
+import {ITask} from "../contexts/TodoProvider"
+
 const priorityList = [
   {key: 1, value: 1, text: "High"},
   {key: 2, value: 2, text: "Medium"},
-  {key: 3, value: 3, text: "Minor"},
+  {key: 3, value: 3, text: "Low"},
 ]
 
 const ToDoList = (props: IProps) => (
   <Table inverted sortable celled fixed textAlign="center">
     <Table.Header>
       <Table.Row>
-        <Table.HeaderCell sorted={props.nameSorting} onClick={props.toggleNameSorting}>
+        <Table.HeaderCell sorted={props.nameASCSorting ? "ascending" : "descending"} onClick={props.toggleNameSorting}>
           Name
         </Table.HeaderCell>
         <Table.HeaderCell>Priority</Table.HeaderCell>
@@ -50,8 +52,8 @@ const ToDoList = (props: IProps) => (
 
 interface IProps {
   tasks: ITask[]
-  nameSorting: SortingOpts | undefined
-  toggleNameSorting: (args: SortingOpts) => void
+  nameASCSorting: boolean
+  toggleNameSorting: () => void
   handleChangePriority: (arg1: DropdownProps, arg2: string) => void
   toggleComplete: (arg1: CheckboxProps, arg2: string) => void
   handleDelete: (arg1: string) => void

@@ -1,6 +1,8 @@
 import React from "react"
 import {Statistic} from "semantic-ui-react"
 
+import {ITask} from "../contexts/TodoProvider"
+
 const Dashboard = (props: IProps) => {
   const numberOfTask: number = props.tasks.length
   const numberOfTaskCompleted: number = props.tasks.filter((task) => task.completed).length
