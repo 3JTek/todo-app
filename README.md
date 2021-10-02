@@ -4,12 +4,12 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 # Project requirements
 
-- Add and view tasks
-- Delete a task
-- Complete a task
-- Set a priority for my tasks (clarifications: high, medium, low)
-- View the tasks sorted by priority and name (clarifications: Name and priority sort are independent of each other. However, you may choose to further order by the other field if more than one item has the same value.)
-- View the number of total and completed tasks
+- Add and view tasks => done
+- Delete a task => done
+- Complete a task => done
+- Set a priority for my tasks (clarifications: high, medium, low) => done
+- View the tasks sorted by priority and name (clarifications: Name and priority sort are independent of each other. However, you may choose to further order by the other field if more than one item has the same value.) => done
+- View the number of total and completed tasks => done
 
 ## Available Scripts
 
