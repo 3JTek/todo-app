@@ -62,8 +62,6 @@ const App: FC = (): JSX.Element => {
 
   const tasksFilteredAndSorted: ITask[] = processTasks(filterByPriority, sortByName)(tasks)
 
-  console.log("Rendering App", tasksFilteredAndSorted)
-
   return (
     <>
       <header>

@@ -7,7 +7,7 @@ const initialTasks = [
   {id: uuidv4(), name: "First task", priority: 2, completed: false},
   {id: uuidv4(), name: "Second task", priority: 1, completed: true},
   {id: uuidv4(), name: "Third task", priority: 1, completed: false},
-  {id: uuidv4(), name: "Third task", priority: 3, completed: true},
+  {id: uuidv4(), name: "Fourth task", priority: 3, completed: true},
 ]
 
 const initialState: ITodoContext = {tasks: initialTasks, newTask: "", priorityFilter: null, nameASCSorting: false}

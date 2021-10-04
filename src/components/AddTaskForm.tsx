@@ -6,7 +6,7 @@ const AddTaskForm = (props: IProps) => (
     <Form.Group>
       <Form.Input
         widths={12}
-        placeholder="Listen to my client's needs"
+        placeholder="Type here..."
         name="newTask"
         value={props.newTask}
         onChange={props.handleNewTaskChange}
