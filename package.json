@@ -21,7 +21,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "lint": "eslint --fix",
+    "lint": "eslint \"src/**/*.{js,ts,tsx}\" --fix",
+    "format": "prettier \"src/**/*.{js,ts,tsx}\" --write",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -52,6 +53,7 @@
     "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.26.0",
-    "eslint-plugin-react-hooks": "^4.2.0"
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "prettier": "^2.4.1"
   }
 }

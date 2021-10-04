@@ -11,7 +11,15 @@ module.exports = {
     },
     ecmaVersion: 12,
     sourceType: "module",
+    react: {
+      version: "17",
+    },
   },
   plugins: ["react", "@typescript-eslint"],
+  settings: {
+    react: {
+      version: "detect", // Tells eslint-plugin-react to automatically detect the version of React to use
+    },
+  },
   rules: {},
-};
+}
