@@ -2,6 +2,11 @@ body {
   background-color: #282c34;
 }
 
+/* Fix the semantic ui table component to allow dropdown to be render properly */
+.ui.fixed.table td {
+  overflow: visible;
+}
+
 #root header {
   margin-top: 1rem;
   height: 4rem;
